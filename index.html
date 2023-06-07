@@ -21,15 +21,23 @@
             </div>
         </div>
 
-        <div class="calendarContainer">
-            <div class="monthContainer">
-                <span>&#10094</span>
-                <p class="month"></p>
-                <span>&#10095</span>
+        <div class="calendarControls">
+            <div class="calendarContainer">
+                <div class="monthContainer">
+                    <span onclick="changeDate(-1)">&#10094</span>
+                    <p class="month"></p>
+                    <span onclick="changeDate(1)">&#10095</span>
+                </div>
+                <table class="calendar">
+                    <tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr>
+                </table>
             </div>
-            <table class="calendar">
-                <tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr>
-            </table>
+
+            <button class="nowBtn" onclick="changeDate(0)">Now</button>
+        </div>
+
+        <div class="datetime">
+            <p>00/00/0000, 00:00:00 AM</p>
         </div>
     </div>
 
