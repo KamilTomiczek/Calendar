@@ -121,6 +121,7 @@ body{
     flex-direction: column;
     justify-content: center;
     margin-right: 50px;
+    width: 150px;
 }
 
 .main .day .items{

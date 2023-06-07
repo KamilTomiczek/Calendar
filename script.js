@@ -1,26 +1,24 @@
 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 var d = new Date()
-var nav = d.getMonth()
 var selectedDate = new Date()
 
-function valueChanged(el){
-    selectedDate.setFullYear(d.getFullYear())
-    selectedDate.setMonth(d.getMonth())
-    selectedDate.setDate(el.value)
-
-    loadMainItems()
-}
-
 function loadMainItems(){
-    let dateContainer = new Date(selectedDate - 1000 * 60 * 60 * 24 * (selectedDate.getDay() - 1))
+    if(selectedDate.getDay() == 0){
+        var dateContainer = new Date(selectedDate - (1000 * 60 * 60 * 24 * (selectedDate.getDay() + 6)))
+    }
+    else{
+        var dateContainer = new Date(selectedDate - (1000 * 60 * 60 * 24 * (selectedDate.getDay() - 1)))
+    }
 
-    let elements = document.querySelectorAll(".main .day .dateContainer p")
+    let elements = document.querySelectorAll(".main .day")
 
     let option = { day: "2-digit", month: "2-digit", year: "numeric"}
 
     for(let i = 0; i < 7; i++){
-        elements[i].innerHTML = dateContainer.toLocaleString("en-US", option)
+        elements[i].querySelector(".items").innerHTML = ""
+        elements[i].querySelector(".dateContainer p").innerHTML = dateContainer.toLocaleString("en-US", option)
+
         dateContainer.setDate(dateContainer.getDate() + 1)
     }
 }
@@ -61,7 +59,7 @@ function createCalendar(){
                 }
             }
             else{
-                calendar += '<td><input type="radio" name="day" checked value="' + j + '">' + j + '<span class="checkmark"></td>'
+                calendar += '<td><input type="radio" name="day" onclick="valueChanged(this);" checked value="' + j + '">' + j + '<span class="checkmark"></td>'
                 j++
             }
         }
@@ -75,8 +73,33 @@ function createCalendar(){
     document.querySelector(".month").innerHTML = months[d.getMonth()] + " " + d.getFullYear()
 }
 
-function changeDate(i){
+createCalendar()
+loadMainItems()
 
+// Clock
+
+var options = { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"}
+const datetimeItem = document.querySelector(".datetime p")
+
+setInterval( () => {
+    var now = new Date(Date.now())
+    datetimeItem.innerHTML = now.toLocaleString("en-US", options)
+}, 1000)
+
+
+// Events
+
+var nav = d.getMonth()
+
+function valueChanged(el){
+    selectedDate.setFullYear(d.getFullYear())
+    selectedDate.setMonth(d.getMonth())
+    selectedDate.setDate(el.value)
+
+    loadMainItems()
+}
+
+function changeDate(i){
     if(i != 0){
         if(nav == 0 && i < 0){
             d.setMonth(nav = 11)
@@ -108,16 +131,3 @@ function changeDate(i){
     loadMainItems()
     createCalendar()
 }
-
-createCalendar()
-loadMainItems()
-
-// Clock
-
-var options = { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit"}
-const datetimeItem = document.querySelector(".datetime p")
-
-setInterval( () => {
-    var now = new Date(Date.now())
-    datetimeItem.innerHTML = now.toLocaleString("en-US", options)
-}, 1000)
