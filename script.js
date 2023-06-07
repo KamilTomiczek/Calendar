@@ -4,23 +4,41 @@ var d = new Date()
 var selectedDate = new Date()
 
 function loadMainItems(){
-    if(selectedDate.getDay() == 0){
-        var dateContainer = new Date(selectedDate - (1000 * 60 * 60 * 24 * (selectedDate.getDay() + 6)))
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+
+        const xmlDoc = this.responseXML;
+        const x = xmlDoc.getElementsByTagName("item");
+
+        if(selectedDate.getDay() == 0){
+            var dateContainer = new Date(selectedDate - (1000 * 60 * 60 * 24 * (selectedDate.getDay() + 6)))
+        }
+        else{
+            var dateContainer = new Date(selectedDate - (1000 * 60 * 60 * 24 * (selectedDate.getDay() - 1)))
+        }
+
+        let elements = document.querySelectorAll(".main .day")
+
+        let option = { day: "2-digit", month: "2-digit", year: "numeric"}
+
+        for(let i = 0; i < 7; i++){
+            elements[i].querySelector(".items").innerHTML = ""
+            elements[i].querySelector(".dateContainer p").innerHTML = dateContainer.toLocaleString("en-US", option)
+
+           for(let j = 0; j < x.length; j++){
+                if(x[j].getAttribute("date") == dateContainer.toLocaleString("en-US", option)){
+                    elements[i].querySelector(".items").innerHTML += '<div class="item" style="background: ' + x[j].getAttribute("color") + ';"><h4>' + x[j].getAttribute("title") + '</h4><p>' + x[j].getAttribute("time") + '</p><img src="img/trash.png" alt=""></div>'
+                }
+           }
+                
+            dateContainer.setDate(dateContainer.getDate() + 1)
+        }
     }
-    else{
-        var dateContainer = new Date(selectedDate - (1000 * 60 * 60 * 24 * (selectedDate.getDay() - 1)))
-    }
+    xhttp.open("GET", "data.xml");
+    xhttp.send();
 
-    let elements = document.querySelectorAll(".main .day")
-
-    let option = { day: "2-digit", month: "2-digit", year: "numeric"}
-
-    for(let i = 0; i < 7; i++){
-        elements[i].querySelector(".items").innerHTML = ""
-        elements[i].querySelector(".dateContainer p").innerHTML = dateContainer.toLocaleString("en-US", option)
-
-        dateContainer.setDate(dateContainer.getDate() + 1)
-    }
+    
 }
 
 function getDays(year, month) {
