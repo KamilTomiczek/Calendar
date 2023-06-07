@@ -2,6 +2,28 @@ var months = ["January", "February", "March", "April", "May", "June", "July", "A
 
 var d = new Date()
 var nav = d.getMonth()
+var selectedDate = new Date()
+
+function valueChanged(el){
+    selectedDate.setFullYear(d.getFullYear())
+    selectedDate.setMonth(d.getMonth())
+    selectedDate.setDate(el.value)
+
+    loadMainItems()
+}
+
+function loadMainItems(){
+    let dateContainer = new Date(selectedDate - 1000 * 60 * 60 * 24 * (selectedDate.getDay() - 1))
+
+    let elements = document.querySelectorAll(".main .day .dateContainer p")
+
+    let option = { day: "2-digit", month: "2-digit", year: "numeric"}
+
+    for(let i = 0; i < 7; i++){
+        elements[i].innerHTML = dateContainer.toLocaleString("en-US", option)
+        dateContainer.setDate(dateContainer.getDate() + 1)
+    }
+}
 
 function getDays(year, month) {
     return new Date(year, month, 0).getDate();
@@ -31,7 +53,7 @@ function createCalendar(){
         for(let i = 0; i < 7 - l; i++){
             if(j != d.getDate()){
                 if(j <= daysNumber){
-                    calendar += '<td><input type="radio" name="day" value="' + j + '">' + j + '<span class="checkmark"></td>'
+                    calendar += '<td><input type="radio" onclick="valueChanged(this);" name="day" value="' + j + '">' + j + '<span class="checkmark"></td>'
                     j++
                 }
                 else{
@@ -81,10 +103,14 @@ function changeDate(i){
         nav = _now.getMonth()
     }
     
+    selectedDate = d
+
+    loadMainItems()
     createCalendar()
 }
 
 createCalendar()
+loadMainItems()
 
 // Clock
 
