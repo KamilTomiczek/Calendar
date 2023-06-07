@@ -21,13 +21,13 @@ body{
 }
 
 .nav{
-    width: 20%;
+    width: 350px;
     height: 100vh;
     background: var(--itemColor);
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 50px;
+    gap: 75px;
     padding: 20px;
     box-shadow: var(--shadow);
 }
@@ -60,4 +60,59 @@ body{
 
 .nav .imgContainer .container .img img{
     width: 75%;
+}
+
+
+/* Calendar table */
+
+.calendarContainer{
+    user-select: none;
+}
+
+.calendar{
+    width: 100%;
+}
+
+.calendar th, .calendar td{
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    position: relative;
+}
+
+.calendar input{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark{
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 3px solid var(--themeColor);
+    border-radius: 50%;
+}
+
+.calendar input:checked ~ .checkmark{
+    display: block;
+}
+
+.monthContainer{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.monthContainer span{
+    cursor: pointer;
+    padding: 5px 10px;
 }

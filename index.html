@@ -8,6 +8,7 @@
 
     <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <div class="nav">
@@ -21,8 +22,17 @@
         </div>
 
         <div class="calendarContainer">
-            <input type="date" name="" id="">
+            <div class="monthContainer">
+                <span>&#10094</span>
+                <p class="month"></p>
+                <span>&#10095</span>
+            </div>
+            <table class="calendar">
+                <tr><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr>
+            </table>
         </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
