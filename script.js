@@ -3,43 +3,56 @@ var months = ["January", "February", "March", "April", "May", "June", "July", "A
 var d = new Date()
 var selectedDate = new Date()
 
+const getEvents = () => {
+    let events
+
+    if(localStorage.getItem('events') === null){
+        events = []
+    }else {
+        events = JSON.parse(localStorage.getItem('events'))
+    }
+    
+    return events
+}
+
 function loadMainItems(){
 
-    const xhttp = new XMLHttpRequest();
-    xhttp.onload = function() {
+    let x = getEvents()
 
-        const xmlDoc = this.responseXML;
-        const x = xmlDoc.getElementsByTagName("item");
-
-        if(selectedDate.getDay() == 0){
-            var dateContainer = new Date(selectedDate - (1000 * 60 * 60 * 24 * (selectedDate.getDay() + 6)))
-        }
-        else{
-            var dateContainer = new Date(selectedDate - (1000 * 60 * 60 * 24 * (selectedDate.getDay() - 1)))
-        }
-
-        let elements = document.querySelectorAll(".main .day")
-
-        let option = { day: "2-digit", month: "2-digit", year: "numeric"}
-
-        for(let i = 0; i < 7; i++){
-            elements[i].querySelector(".items").innerHTML = ""
-            elements[i].querySelector(".dateContainer p").innerHTML = dateContainer.toLocaleString("en-US", option)
-
-           for(let j = 0; j < x.length; j++){
-                if(x[j].getAttribute("date") == dateContainer.toLocaleString("en-US", option)){
-                    elements[i].querySelector(".items").innerHTML += '<div class="item" style="background: ' + x[j].getAttribute("color") + ';"><h4>' + x[j].getAttribute("title") + '</h4><p>' + x[j].getAttribute("time") + '</p><img src="img/trash.png" alt=""></div>'
-                }
-           }
-                
-            dateContainer.setDate(dateContainer.getDate() + 1)
-        }
+    if(selectedDate.getDay() == 0){
+        var dateContainer = new Date(selectedDate - (1000 * 60 * 60 * 24 * (selectedDate.getDay() + 6)))
     }
-    xhttp.open("GET", "data.xml");
-    xhttp.send();
+    else{
+        var dateContainer = new Date(selectedDate - (1000 * 60 * 60 * 24 * (selectedDate.getDay() - 1)))
+    }
 
-    
+    let elements = document.querySelectorAll(".main .day")
+
+    let option = { day: "2-digit", month: "2-digit", year: "numeric"}
+
+    for(let i = 0; i < 7; i++){
+        elements[i].querySelector(".items").innerHTML = ""
+        elements[i].querySelector(".dateContainer p").innerHTML = dateContainer.toLocaleString("en-US", option)
+
+        for(let j = 0; j < x["items"].length; j++){
+            if(x["items"][j].date == dateContainer.toLocaleString("en-US", option)){
+                elements[i].querySelector(".items").innerHTML += '<div class="item" onclick="delEvent(' + j + ')" style="background: ' + x["items"][j].color + ';"><h4>' + x["items"][j].title + '</h4><p>' + x["items"][j].time + '</p><img src="img/trash.png" alt=""></div>'
+            }
+        }
+            
+        dateContainer.setDate(dateContainer.getDate() + 1)
+    }     
 }
+
+function delEvent(indx){
+    console.log(indx)
+    let events = getEvents()
+    events["items"].splice(indx, 1)
+    localStorage.setItem('events', JSON.stringify(events))
+
+    loadMainItems()
+}
+
 
 function getDays(year, month) {
     return new Date(year, month, 0).getDate();

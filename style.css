@@ -128,10 +128,11 @@ body{
     display: flex;
     align-items: center;
     gap: 10px;
+    overflow: auto;
+    width: 100%;
 }
 
 .main .day .items .item{
-    background: var(--themeColor);
     height: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 20px;
