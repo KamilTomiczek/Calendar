@@ -94,6 +94,36 @@ body{
     color: var(--secondFontColor);
 }
 
+.form{
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form p{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+}
+
+.form p input{
+    border: 2px solid var(--themeColor);
+    background: none;
+    border-radius: 12px;
+    padding: 0px 5px;
+}
+
+.form button{
+    background: none;
+    border: 2px solid var(--themeColor);
+    padding: 0px 15px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
 /* Main section */
 
 .main{
@@ -145,6 +175,7 @@ body{
 }
 
 .main .day .items .item h4{
+    text-align: center;
     font-size: 16px;
     font-weight: 400;
 }

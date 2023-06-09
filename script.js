@@ -3,7 +3,9 @@ var months = ["January", "February", "March", "April", "May", "June", "July", "A
 var d = new Date()
 var selectedDate = new Date()
 
-const getEvents = () => {
+let option = { day: "2-digit", month: "2-digit", year: "numeric"}
+
+function getEvents() {
     let events
 
     if(localStorage.getItem('events') === null){
@@ -28,27 +30,58 @@ function loadMainItems(){
 
     let elements = document.querySelectorAll(".main .day")
 
-    let option = { day: "2-digit", month: "2-digit", year: "numeric"}
-
     for(let i = 0; i < 7; i++){
         elements[i].querySelector(".items").innerHTML = ""
         elements[i].querySelector(".dateContainer p").innerHTML = dateContainer.toLocaleString("en-US", option)
 
-        for(let j = 0; j < x["items"].length; j++){
-            if(x["items"][j].date == dateContainer.toLocaleString("en-US", option)){
-                elements[i].querySelector(".items").innerHTML += '<div class="item" onclick="delEvent(' + j + ')" style="background: ' + x["items"][j].color + ';"><h4>' + x["items"][j].title + '</h4><p>' + x["items"][j].time + '</p><img src="img/trash.png" alt=""></div>'
+
+        if(x.length != 0){
+            for(let j = 0; j < x["items"].length; j++){
+                if(x["items"][j].date == dateContainer.toLocaleString("en-US", option)){
+                    elements[i].querySelector(".items").innerHTML += '<div class="item" style="background: ' + x["items"][j].color + ';"><h4>' + x["items"][j].title + '</h4><p>' + x["items"][j].time + '</p><img src="img/trash.png" onclick="delEvent(' + j + ')" alt=""></div>'
+                }
             }
         }
-            
+
         dateContainer.setDate(dateContainer.getDate() + 1)
     }     
 }
 
 function delEvent(indx){
-    console.log(indx)
+   
     let events = getEvents()
     events["items"].splice(indx, 1)
+
     localStorage.setItem('events', JSON.stringify(events))
+
+    loadMainItems()
+}
+
+function addEvent(){
+    let events = getEvents()
+
+    let title = document.getElementById("title")
+    let color = document.getElementById("color")
+    let from = document.getElementById("from")
+    let to = document.getElementById("to")
+
+    let time
+
+    if(from.value > to.value){
+        time = to.value + " - " + from.value
+    }
+    else{
+        time = from.value + " - " + to.value
+    }
+
+    events["items"].push(JSON.parse('{"title": "' + title.value + '","date": "' + selectedDate.toLocaleString("en-US", option) + '","time": "' + time + '","color": "' + color.value + '"}'))
+
+    localStorage.setItem('events', JSON.stringify(events))
+
+    title.value = ""
+    color.value = "#ffffff"
+    from.value = ""
+    to.value = ""
 
     loadMainItems()
 }
